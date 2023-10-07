@@ -1,0 +1,86 @@
+{% extends "base_index.html" %} {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-family: Arial, sans-serif;
+      }
+
+      .container form {
+        width: 300px;
+        background: white;
+
+        border-radius: 5px;
+      }
+
+      .h1con h1 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .container label {
+        display: block;
+      }
+
+      .container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+
+      .container input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 5px;
+      }
+
+      .container input[type="submit"]:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="h1con">
+      <h1>Zresetuj hasło</h1>
+    </div>
+    <div class="container">
+      <form method="POST">
+        <label for="new_password"></label><br />
+        <input
+          type="password"
+          id="new_password"
+          name="new_password"
+          placeholder="Nowe hasło"
+          required
+        />
+
+        <label for="confirm_password"></label><br />
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          required
+          placeholder="Potwierdź nowe hasło"
+        />
+
+        <input type="submit" value="Zmień hasło" />
+      </form>
+    </div>
+  </body>
+</html>
+{% endblock %}

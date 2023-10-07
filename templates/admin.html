@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .users {
+        text-align: center;
+      }
+
+      /* Center the list horizontally */
+      .users ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* In case the list is longer than the container width */
+        padding: 0;
+        flex-direction: column;
+      }
+
+      /* Style the list items (buttons) */
+      .users li {
+        list-style: none;
+        margin: 10px;
+        display: inline-block; /* Display the li elements inline-block to avoid full width */
+      }
+
+      .users li a {
+        text-decoration: none;
+        color: white;
+        font-size: large;
+        position: relative; /* Position the links relative to the li element */
+      }
+
+      /* Style the buttons */
+      .user-button {
+        padding: 10px 20px;
+        background-color: #000000;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block; /* Display the buttons inline-block to avoid full width */
+        border: 1px solid white;
+      }
+      .send {
+        padding: 10px 20px;
+        background-color: #000000;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block; /* Display the buttons inline-block to avoid full width */
+        border: 1px solid #0408ff;
+      }
+
+      /* Style the badge container */
+      .badge-container {
+        position: absolute;
+        top: -10px; /* Adjust the position to protrude from the top */
+        right: -10px; /* Adjust the position to protrude from the right */
+      }
+
+      /* Style the badge */
+      .badge {
+        display: inline-block;
+        background-color: red;
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        border-radius: 15px;
+      }
+      .send {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="users">
+      <a class="send" href="{{ url_for('send_message_to_all') }}"
+        >Wyślij wiadomość do wszystkich</a
+      >
+      <ul>
+        {% for user in users %} {% if user.username != "admin" and not
+        user.admin %}
+        <li>
+          <a
+            href="{{ url_for('admin_user', user_id=user.id) }}"
+            class="user-button"
+          >
+            {{ user.name }} {{ user.surname }} {% if
+            unread_messages_count.get(user.id, 0) > 0 %}
+            <span class="badge-container">
+              <span class="badge">{{ unread_messages_count[user.id] }}</span>
+            </span>
+            {% endif %}
+          </a>
+        </li>
+        {% endif %} {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>
+{% endblock %}

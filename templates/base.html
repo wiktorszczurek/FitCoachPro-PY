@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Siła Fizjo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #0c0c0c;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        transition: left 0.3s ease-in-out;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      body.pushed {
+        left: -50%;
+      }
+
+      .navbar {
+        background-color: #000000;
+        color: #fff;
+        padding: 0px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .navbar h2 {
+        margin: 0;
+      }
+
+      .navbar .menu {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-right: 2rem;
+      }
+
+      .navbar .menu li,
+      .navbar .mobile-menu li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .navbar .menu li a,
+      .navbar .mobile-menu li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: large;
+      }
+
+      .navbar .mobile-menu {
+        display: none;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+        background-color: #000000;
+        position: fixed;
+        top: 0;
+        right: -55%;
+        transition: right 0.3s ease-in-out;
+        width: 50%;
+        height: 100vh;
+        align-items: center;
+        gap: 20px;
+        padding-top: 40px;
+      }
+
+      body.pushed .navbar .mobile-menu {
+        right: 0;
+      }
+
+      .hamburger {
+        display: none;
+      }
+      .flash-messages {
+        background-color: #0c0c0c;
+        color: #ffffff;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .avatar {
+        width: 22px;
+        height: auto;
+        margin-right: 5px;
+        padding: 0;
+      }
+      .navbar .menu li img.avatar,
+      .navbar .mobile-menu li img.avatar {
+        vertical-align: middle;
+      }
+
+      .footer {
+        margin-top: auto;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .footer span {
+        font-weight: bold;
+      }
+
+      .badge-container-confirm {
+        display: inline-block;
+      }
+
+      .badge-confirm {
+        position: absolute;
+        top: -10px;
+        right: -15px;
+        display: inline-block;
+        background-color: red;
+        color: white;
+        padding: 4px 7px;
+        font-size: 11px;
+        border-radius: 10px;
+      }
+      .navbar .logo {
+        display: block;
+        margin: 0 auto;
+        width: 150px;
+        height: auto;
+        margin-left: 0;
+        padding: 0.8rem;
+        margin-left: 0.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .navbar h2 {
+          font-size: 1.2rem;
+        }
+        .hamburger {
+          display: block;
+          font-size: 24px;
+          margin-right: 1rem;
+        }
+
+        .navbar .menu {
+          display: none;
+        }
+
+        .navbar .mobile-menu {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .navbar .mobile-menu li {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          width: 100%;
+          margin-left: 1rem;
+        }
+        .navbar .mobile-menu li a {
+          color: white;
+          text-decoration: none;
+          text-align: center;
+        }
+        .avatar {
+          margin-bottom: 0.3rem;
+          width: 20px;
+          height: auto;
+          margin-right: 10px;
+          padding: 0;
+        }
+        .navbar .mobile-menu li img.avatar {
+          margin-top: 5px;
+        }
+        .logo {
+          width: 300px;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="{{ url_for('admin')}}">
+        <img src="/static/images/logo15.png" alt="Logo" class="logo" />
+      </a>
+
+      <i class="fas fa-bars hamburger"></i>
+      {% if current_user.admin %}
+
+      <ul class="menu">
+        <li>
+          <a href="{{ url_for('admin')}}">
+            <img
+              src="{{ url_for('static', filename='images/home.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Kokpit
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('confirmed') }}" style="position: relative">
+            <img
+              src="{{ url_for('static', filename='images/check.png') }}"
+              alt="User chat"
+              class="avatar"
+            />Potwierdzenia {% if num_unconfirmed > 0 %}
+            <span class="badge-container-confirm">
+              <span class="badge-confirm">{{ num_unconfirmed }}</span>
+            </span>
+            {% endif %}
+          </a>
+        </li>
+
+        <li>
+          <a href="{{ url_for('add_exercise')}}">
+            <img
+              src="{{ url_for('static', filename='images/url.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Dodaj URL
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('add_photo')}}">
+            <img
+              src="{{ url_for('static', filename='images/jpg.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Dodaj zdjęcie
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('articles')}}">
+            <img
+              src="{{ url_for('static', filename='images/news.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Artykuły
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('users_manage')}}">
+            <img
+              src="{{ url_for('static', filename='images/group.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Użytkownicy
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('profile')}}">
+            <img
+              src="{{ url_for('static', filename='images/edit (1).png') }}"
+              alt="Admin"
+              class="avatar"
+            />Profil
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('support')}}">
+            <img
+              src="{{ url_for('static', filename='images/support.png') }}"
+              alt="Support"
+              class="avatar"
+            />Support
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('logout')}}">
+            <img
+              src="{{ url_for('static', filename='images/logout.png') }}"
+              alt="Logout"
+              class="avatar"
+            />Wyloguj się
+          </a>
+        </li>
+      </ul>
+      <ul class="mobile-menu">
+        <li>
+          <a href="{{ url_for('admin')}}">
+            <img
+              src="{{ url_for('static', filename='images/home.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Kokpit
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('confirmed') }}" style="position: relative">
+            <img
+              src="{{ url_for('static', filename='images/check.png') }}"
+              alt="User chat"
+              class="avatar"
+            />Potwierdzenia {% if num_unconfirmed > 0 %}
+            <span class="badge-container-confirm">
+              <span class="badge-confirm">{{ num_unconfirmed }}</span>
+            </span>
+            {% endif %}
+          </a>
+        </li>
+
+        <li>
+          <a href="{{ url_for('add_exercise')}}">
+            <img
+              src="{{ url_for('static', filename='images/url.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Dodaj URL
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('add_photo')}}">
+            <img
+              src="{{ url_for('static', filename='images/jpg.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Dodaj zdjęcie
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('articles')}}">
+            <img
+              src="{{ url_for('static', filename='images/news.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Artykuły
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('users_manage')}}">
+            <img
+              src="{{ url_for('static', filename='images/group.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Użytkownicy
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('profile')}}">
+            <img
+              src="{{ url_for('static', filename='images/edit (1).png') }}"
+              alt="Admin"
+              class="avatar"
+            />Profil
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('support')}}">
+            <img
+              src="{{ url_for('static', filename='images/support.png') }}"
+              alt="Support"
+              class="avatar"
+            />Support
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('logout')}}">
+            <img
+              src="{{ url_for('static', filename='images/logout.png') }}"
+              alt="Logout"
+              class="avatar"
+            />Wyloguj się
+          </a>
+        </li>
+      </ul>
+
+      {% else %}
+      <ul class="menu">
+        <li>
+          <a href="{{ url_for('home')}}">
+            <img
+              src="{{ url_for('static', filename='images/home.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Kokpit
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('training_plans') }}">
+            <img
+              src="{{ url_for('static', filename='images/plans.png') }}"
+              alt="Training Plans"
+              class="avatar"
+            />Plany i ćwiczenia
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('excercises_user') }}">
+            <img
+              src="{{ url_for('static', filename='images/workout.png') }}"
+              alt="Exercises"
+              class="avatar"
+            />Ćwiczenia
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('articles')}}">
+            <img
+              src="{{ url_for('static', filename='images/news.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Artykuły
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('messages') }}" style="position: relative">
+            <img
+              src="{{ url_for('static', filename='images/aaa.png') }}"
+              alt="Messages"
+              class="avatar"
+            />Informacje {% if num_unread_messages> 0 %}
+            <span class="badge-container-confirm">
+              <span class="badge-confirm">{{ num_unread_messages }}</span>
+            </span>
+            {% endif %}
+          </a>
+        </li>
+
+        <li>
+          <a href="{{ url_for('user_chat') }}" style="position: relative">
+            <img
+              src="{{ url_for('static', filename='images/chat.png') }}"
+              alt="User chat"
+              class="avatar"
+            />Wiadomości {% if user_unread_messages_count > 0 %}
+            <span class="badge-container-confirm">
+              <span class="badge-confirm"
+                >{{ user_unread_messages_count }}</span
+              >
+            </span>
+            {% endif %}
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('profile')}}">
+            <img
+              src="{{ url_for('static', filename='images/edit (1).png') }}"
+              alt="Admin"
+              class="avatar"
+            />Profil
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('support')}}">
+            <img
+              src="{{ url_for('static', filename='images/support.png') }}"
+              alt="Support"
+              class="avatar"
+            />Support
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('logout')}}">
+            <img
+              src="{{ url_for('static', filename='images/logout.png') }}"
+              alt="Logout"
+              class="avatar"
+            />Wyloguj się
+          </a>
+        </li>
+      </ul>
+
+      <ul class="mobile-menu">
+        <li>
+          <a href="{{ url_for('home')}}">
+            <img
+              src="{{ url_for('static', filename='images/home.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Kokpit
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('training_plans') }}">
+            <img
+              src="{{ url_for('static', filename='images/plans.png') }}"
+              alt="Training Plans"
+              class="avatar"
+            />Plany i ćwiczenia
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('excercises_user') }}">
+            <img
+              src="{{ url_for('static', filename='images/workout.png') }}"
+              alt="Exercises"
+              class="avatar"
+            />Ćwiczenia
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('articles')}}">
+            <img
+              src="{{ url_for('static', filename='images/news.png') }}"
+              alt="Admin"
+              class="avatar"
+            />Artykuły
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('messages') }}" style="position: relative">
+            <img
+              src="{{ url_for('static', filename='images/aaa.png') }}"
+              alt="Messages"
+              class="avatar"
+            />Informacje {% if num_unread_messages> 0 %}
+            <span class="badge-container-confirm">
+              <span class="badge-confirm">{{ num_unread_messages }}</span>
+            </span>
+            {% endif %}
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('user_chat') }}" style="position: relative">
+            <img
+              src="{{ url_for('static', filename='images/chat.png') }}"
+              alt="User chat"
+              class="avatar"
+            />Wiadomości {% if user_unread_messages_count > 0 %}
+            <span class="badge-container-confirm">
+              <span class="badge-confirm"
+                >{{ user_unread_messages_count }}</span
+              >
+            </span>
+            {% endif %}
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('profile')}}">
+            <img
+              src="{{ url_for('static', filename='images/edit (1).png') }}"
+              alt="Admin"
+              class="avatar"
+            />Profil
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('support')}}">
+            <img
+              src="{{ url_for('static', filename='images/support.png') }}"
+              alt="Support"
+              class="avatar"
+            />Support
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('logout')}}">
+            <img
+              src="{{ url_for('static', filename='images/logout.png') }}"
+              alt="Logout"
+              class="avatar"
+            />Wyloguj się
+          </a>
+        </li>
+      </ul>
+
+      {% endif %}
+    </nav>
+
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages() %} {% if messages %} {% for
+      message in messages %}
+      <div class="flash-message">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %}
+    </div>
+
+    <div class="content">{% block content %}{% endblock %}</div>
+
+    <footer class="footer">
+      <p style="margin-bottom: 10px; font-size: 1rem; color: white">
+        &copy; 2023. Wszystkie prawa zastrzeżone.<br />
+        <a
+          href="https://itisws.pl"
+          style="
+            color: white;
+            font-weight: medium;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 1rem;
+          "
+          >Created by <span>ITisws.pl</span></a
+        >
+      </p>
+    </footer>
+    <script>
+      const hamburger = document.querySelector(".hamburger");
+      const body = document.querySelector("body");
+      const mobileMenu = document.querySelector(".mobile-menu");
+
+      hamburger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        body.classList.toggle("pushed");
+      });
+
+      window.addEventListener("click", function (e) {
+        if (!mobileMenu.contains(e.target)) {
+          body.classList.remove("pushed");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,275 @@
+{% extends 'base_index.html' %} {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rejestracja</title>
+
+    <style>
+  .form-container {
+    background: #0c0c0c;
+    max-width: 400px;
+    width: calc(100% - 40px);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    margin: 0px auto; 
+  }
+    
+  .form-container h2 {
+        margin-bottom: 20px;
+        text-align: center;
+        color: #ffffff;
+      }
+    
+      .form-group {
+        margin-bottom: 15px;
+      }
+    
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+    
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        color: #ffffff;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        background-color: rgb(0, 0, 0);
+      }
+    
+      .form-group input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+      }
+    
+      .form-group .text-danger {
+        color: #ff0000;
+      }
+    
+      .form-container a {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color: #007bff;
+        margin-bottom: 15px;
+      }
+    
+      .form-group button {
+        padding: 10px 20px;
+        width: 100%;
+        background-color: #0408ff;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+    
+      .form-group button:hover {
+        background-color: #0056b3;
+      }
+      
+      .form-group-register input {
+        width: 100%;
+        padding: 15px;
+        border-radius: 5px;
+        color: rgb(255, 255, 255);
+        font-size: 16px;
+        background-color: #0408ff;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        border: none;
+        margin-bottom: 1rem;
+        font-weight: medium;
+        cursor: pointer;
+        font-size: large;
+      }
+      .register-button {
+        display: block;
+        padding: 15px;
+        background-color: #000286;
+        border-radius: 5px;
+        color: #fff;
+        transition: all 0.2s;
+        text-decoration: none;
+        text-align: center;
+        justify-content: center;
+        font-size: large;
+      }
+    
+      .register-button a {
+        color: white;
+        padding-top: 0;
+      }
+    
+      .form-container a {
+        margin-bottom: 0;
+      }
+    
+      .separator {
+        text-align: center;
+        margin: 20px 0;
+      }
+    
+      .separator:before {
+        content: "";
+        display: inline-block;
+        height: 1px;
+        vertical-align: middle;
+        width: 100%;
+        background: #a3a3a3;
+      }
+      .logo {
+        display: block;
+        margin: 0 auto 30px; /* Dodaj margines na dole, aby oddzielić logo od nagłówka */
+        width: 400px; /* Dostosuj szerokość loga do swoich potrzeb */
+        height: auto; /* Zachowaj proporcje loga */
+      }
+    
+      @media (max-width: 600px) {
+        .form-container {
+          padding: 10px;
+        }
+        .logo {
+          width: 300px;
+          height: auto;
+        }
+      }
+       .register-link {
+      text-align: center;
+      margin-top: 10px;
+      color: white;
+      
+    }
+
+    .register-link a {
+      margin-top: 5px;
+      color: #ffffff;
+      font-weight: bold;
+    }
+          .form-group {
+        position: relative;
+      }
+
+      .form-group input {
+        padding-left: 40px; /* Zapewnia miejsce na ikonkę */
+
+        background-size: 20px; /* Rozmiar ikonki */
+        background-repeat: no-repeat;
+        background-position: 10px center; /* Pozycja ikonki */
+      }
+
+      .form-group input[type="password"] {
+        background-image: url("/static/images/padlock.png"); /* Ścieżka do ikonki dla hasła */
+      }
+
+      .form-group input.email-icon {
+        background-image: url("/static/images/email.png");
+      }
+      .form-group input.name-icon {
+  background-image: url("/static/images/edit (1).png");
+}
+
+.form-group input.surname-icon {
+  background-image: url("/static/images/edit (1).png");
+}
+.form-group input.username-icon {
+  background-image: url("/static/images/a.png");
+}
+
+.form-group input.confirm-icon {
+  background-image: url("/static/images/padlock.png");
+}
+.form-group input#email::placeholder {
+        color: #ffffff; /
+      }
+      .form-group input#username::placeholder {
+        color: #ffffff; 
+      }
+      .form-group input#name::placeholder {
+        color: #ffffff; 
+      }
+      .form-group input#surname::placeholder {
+        color: #ffffff; 
+      }
+      .form-group input#confirm_password::placeholder {
+        color: #ffffff; 
+      }
+      .form-group input#password::placeholder {
+        color: #ffffff; 
+      }
+
+
+
+    </style>
+    
+    <div class="form-container">
+      <img src="/static/images/logo15.png" alt="Logo" class="logo" />
+      
+      <form method="POST" action="{{ url_for('register') }}">
+        {{ form.hidden_tag() }}
+    
+<div class="form-group">
+  <label for="name"></label>
+  {{ form.name(id="name", size=20, class="form-control name-icon", placeholder="Imię") }}
+  {% for error in form.name.errors %}
+    <span class="text-danger">{{ error }}</span>
+  {% endfor %}
+</div>
+
+
+    
+<div class="form-group">
+  {{ form.surname(id="surname", size=20, class="form-control surname-icon", placeholder="Nazwisko") }}
+  {% for error in form.surname.errors %}
+    <span class="text-danger">{{ error }}</span>
+  {% endfor %}
+</div>
+
+    
+        <div class="form-group">
+          {{ form.username(id="username", size=20, class="form-control username-icon", placeholder="Nazwa użytkownika") }} {% for error in form.username.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </div>
+    
+        <div class="form-group">
+          {{ form.email(id="email", size=20, class="form-control email-icon", placeholder="Email") }} {% for error in form.email.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </div>
+    
+        <div class="form-group">
+          {{ form.password(size=20, class="form-control", placeholder="Hasło") }} {% for error in form.password.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </div>
+    
+        <div class="form-group">
+          {{ form.confirm_password(size=20, class="form-control confirm-icon", placeholder="Potwierdź hasło") }} {% for error in form.confirm_password.errors %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+        </div>
+    
+        <div class="form-group-register">{{ form.submit(class="btn btn-primary") }}</div>
+      </form>
+      
+  <div class="register-link">
+    Masz już konto? <a href="{{ url_for('login') }}">Zaloguj się</a>
+  </div>
+
+    </div>
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .send_to_all {
+        color: white;
+
+        text-align: center;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .send_to_all h1,
+      .send_to_all label,
+      .send_to_all textarea {
+        color: white;
+      }
+      .send_to_all input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        color: #ffffff;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        background-color: rgb(0, 0, 0);
+        margin-bottom: 1rem;
+      }
+      .send_to_all textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        color: #ffffff;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        background-color: rgb(0, 0, 0);
+      }
+      .send_to_all textarea:focus,
+      .send_to_all input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+      }
+      .send_to_all button {
+        width: 100%;
+        padding: 15px;
+        border-radius: 5px;
+        color: rgb(255, 255, 255);
+        font-size: 16px;
+        background-color: #0408ff;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        border: none;
+        margin-bottom: 1rem;
+        font-weight: medium;
+        cursor: pointer;
+        font-size: large;
+      }
+      .send_to_all a {
+        color: white;
+      }
+      .send_to_all textarea::placeholder,
+      .send_to_all input::placeholder {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="send_to_all">
+      <h1>Wyślij wiadomość do wszystkich użytkowników</h1>
+      <form method="POST">
+        <div>
+          <input
+            type="text"
+            id="email_subject"
+            name="email_subject"
+            placeholder="Tytuł e-maila"
+          />
+
+          <textarea
+            id="content"
+            name="content"
+            placeholder="Treść"
+            rows="7"
+          ></textarea>
+        </div>
+        <br />
+        <button type="submit">Wyślij do wszystkich użytkowników</button>
+      </form>
+    </div>
+  </body>
+</html>
+{% endblock %}
