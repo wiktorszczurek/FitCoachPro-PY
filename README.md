@@ -1,1 +1,2 @@
 # FitCoachPro-PY
+This application is designed for personal trainers and is called "FitCoach Pro." It allows trainers to upload photos, exercises, training plans, and manage user profiles. Users can view their training plans, monitor exercises, and utilize a chat system. The app includes a comprehensive registration process with confirmation, as well as additional features like daily tips and a BMI calculator. Written in Python, JavaScript, HTML and CSS
