@@ -1,0 +1,104 @@
+{% extends "base.html" %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .centered-content {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        color: white;
+      }
+      .centered-content h1 {
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .user-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .user-list li {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      .user-list span {
+        font-weight: bold;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .actions a.confirm-btn,
+      .actions input[type="submit"].delete-btn {
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+        width: 100px; 
+        text-align: center;
+      }
+
+      .actions a.confirm-btn {
+        background-color: green;
+        color: white;
+        font-size: 1rem;
+      }
+
+      .actions input[type="submit"].delete-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="centered-content">
+      <div class="content-container">
+        <h1>Potwierdzenia</h1>
+
+        {% if users %}
+        <ul class="user-list">
+          {% for user in users %}
+          <li>
+            <span style="display: block; margin-bottom: 10px"
+              >{{ user.name }} {{ user.surname }} <br />
+              Email: {{user.email}}</span
+            >
+
+            <div class="actions">
+              <a
+                href="{{ url_for('confirm', user_id=user.id) }}"
+                class="confirm-btn"
+                >Potwierdź</a
+              >
+
+              <form
+                method="post"
+                action="{{ url_for('delete_unconfirmed', user_id=user.id) }}"
+                class="delete-form"
+                onsubmit="return confirm('Czy na pewno nie chcesz potwierdzić: {{ user.name }} {{ user.surname }}?');"
+              >
+                <input type="submit" value="Usuń" class="delete-btn" />
+              </form>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>Brak nowych użytkowników do potwierdzenia.</p>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock %}

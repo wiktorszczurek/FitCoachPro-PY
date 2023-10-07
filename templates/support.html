@@ -1,0 +1,231 @@
+{% if current_user.is_authenticated %} {% extends "base.html" %} {% else %} {%
+extends "base_index.html" %} {% endif %} {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        text-align: center;
+        color: #ffffff;
+      }
+      h2 {
+        color: white;
+      }
+      p {
+        color: white;
+      }
+
+      .support-intro {
+        margin: 20px;
+        text-align: center;
+      }
+
+      .support-intro a {
+        color: #5271ff;
+        font-weight: bold;
+      }
+      a {
+        text-decoration: none;
+        color: #5271ff;
+      }
+
+      .alert {
+        color: #ffffff;
+        background-color: #00fd3b;
+        border-color: #c3e6cb;
+        padding: 10px;
+        margin: 20px auto;
+        text-align: center;
+        border-radius: 5px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin: 20px;
+      }
+
+      .form-group {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+      }
+
+      .form-group input {
+        background-color: #000000;
+      }
+      .form-group select {
+        background-color: #000000;
+        color: white;
+      }
+      .form-group select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+      }
+      .form-group option:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+      }
+      .form-group input::placeholder {
+        color: #ffffff;
+        font-weight: normal;
+      }
+      .form-group textarea {
+        background-color: #000000;
+      }
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+      }
+      .form-group textarea::placeholder {
+        color: #ffffff;
+        font-weight: normal;
+      }
+      .form-group label {
+        margin-bottom: 5px;
+      }
+
+      .form-control {
+        width: 50%;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+
+      .support-instruction {
+        width: 50%;
+        background-color: #000000;
+        border-color: #ffeeba;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+      }
+
+      .btn {
+        background-color: #0408ff;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+      }
+      @media only screen and (max-width: 600px) {
+        .form-control,
+        .support-instruction {
+          width: 100%;
+        }
+
+        form,
+        .support-intro {
+          margin: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Support</h1>
+
+    <div class="support-intro">
+      <h2>
+        Masz problem z aplikacją lub widzisz błąd? Skontaktuj się z nami, a
+        pomożemy Ci rozwiązać problem.
+      </h2>
+      <p>
+        Skorzystaj z poniższego formularza, aby skontaktować się z naszym
+        zespołem. Odpowiemy jak najszybciej. Pozdrawiamy
+        <a href="https://itisws.pl" target="_blank">ITisws.pl</a>
+      </p>
+    </div>
+
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="alert alert-success">
+      {% for message in messages %} {{ message }} {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+
+    <form method="post" action="{{ url_for('support') }}">
+      <div class="form-group">
+        <label for="category">Kategoria problemu</label>
+        <select class="form-control" id="category" name="category" required>
+          <option value="" disabled selected>Wybierz kategorię</option>
+          <option value="logowanie">Problem z logowaniem</option>
+          <option value="rejestracja">Problem z rejestracją</option>
+          <option value="aplikacja">Problem z aplikacją</option>
+          <option value="trening">Problem z treningiem</option>
+          <option value="inne">Inny problem</option>
+        </select>
+        <div
+          class="support-instruction"
+          id="support-instruction-trening"
+          style="display: none"
+        >
+          <p>
+            Jeśli masz problem z treningiem, skontaktuj się ze swoim trenerem
+            personalnym. Zaloguj się do aplikacji, przejdź do kategorii
+            Wiadomości i wyślij wiadomość.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="E-mail"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          id="problem"
+          name="problem"
+          rows="10"
+          placeholder="Opis problemu"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submit-btn">
+        Wyślij
+      </button>
+    </form>
+  </body>
+  <script>
+    // Wyświetlanie instrukcji dla kategorii "Problem z treningiem"
+    document.getElementById("category").addEventListener("change", function () {
+      var selectedCategory = this.value;
+      var instructionDiv = document.getElementById(
+        "support-instruction-trening"
+      );
+      var submitButton = document.getElementById("submit-btn");
+
+      if (selectedCategory === "trening") {
+        instructionDiv.style.display = "block";
+        submitButton.disabled = true;
+      } else {
+        instructionDiv.style.display = "none";
+        submitButton.disabled = false;
+      }
+    });
+  </script>
+</html>
+{% endblock %}
