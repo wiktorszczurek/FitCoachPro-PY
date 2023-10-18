@@ -9,4 +9,4 @@
 - Pleasant and user-friendly interface
 - Email reminders
 - Built-in mini-programs such as: Daily tips, BMI Calculator
- Written in Python, JavaScript, HTML, CSS, Flask
+- Written in Python, JavaScript, HTML, CSS, Flask
