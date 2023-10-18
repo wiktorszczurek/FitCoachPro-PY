@@ -1,0 +1,102 @@
+{% extends "base.html" %} {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .users {
+        padding: 20px;
+        text-align: center;
+        width: 100%;
+      }
+
+      .user-panel h1 {
+        color: #ffffff;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .user-panel ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .user-panel ul li {
+        width: 200px;
+        margin: auto;
+        margin-bottom: 20px;
+      }
+
+      .user-panel ul li a {
+        display: block;
+        background-color: #0408ff;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+      }
+
+      .badge-container {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+      }
+
+      .badge {
+        display: inline-block;
+        background-color: red;
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        border-radius: 15px;
+      }
+      .user-button {
+        padding: 10px 20px;
+        background-color: #0408ff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        position: relative;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="users">
+      <div class="user-panel">
+        <h1>Panel użytkownika: {{ user.name }} {{ user.surname }}</h1>
+
+        <ul>
+          <li>
+            <a href="{{ url_for('add_plan', user_id=user.id) }}">Dodaj plan</a>
+          </li>
+
+          <li>
+            <a href="{{ url_for('send_message', user_id=user.id) }}"
+              >Informacje</a
+            >
+          </li>
+          <li>
+            <a
+              href="{{ url_for('admin_chat', user_id=user.id) }}"
+              class="user-button"
+            >
+              Wiadomości {% if unread_messages_count.get(user.id, 0) > 0 %}
+              <span class="badge-container">
+                <span class="badge">{{ unread_messages_count[user.id] }}</span>
+              </span>
+              {% endif %}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
+
+{% endblock %}

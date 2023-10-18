@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .users {
+        text-align: center;
+      }
+
+      .users ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 0;
+        flex-direction: column;
+      }
+
+      .users li {
+        list-style: none;
+        margin: 10px;
+        display: inline-block;
+      }
+
+      .users li a {
+        text-decoration: none;
+        color: white;
+        font-size: large;
+        position: relative;
+      }
+
+      .user-button {
+        padding: 10px 20px;
+        background-color: #000000;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        border: 1px solid white;
+      }
+      .send {
+        padding: 10px 20px;
+        background-color: #000000;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        border: 1px solid #0408ff;
+      }
+
+      .badge-container {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+      }
+
+      .badge {
+        display: inline-block;
+        background-color: red;
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        border-radius: 15px;
+      }
+      .send {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="users">
+      <a class="send" href="{{ url_for('send_message_to_all') }}"
+        >Wyślij wiadomość do wszystkich</a
+      >
+      <ul>
+        {% for user in users %} {% if user.username != "admin" and not
+        user.admin %}
+        <li>
+          <a
+            href="{{ url_for('admin_user', user_id=user.id) }}"
+            class="user-button"
+          >
+            {{ user.name }} {{ user.surname }} {% if
+            unread_messages_count.get(user.id, 0) > 0 %}
+            <span class="badge-container">
+              <span class="badge">{{ unread_messages_count[user.id] }}</span>
+            </span>
+            {% endif %}
+          </a>
+        </li>
+        {% endif %} {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>
+{% endblock %}

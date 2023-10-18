@@ -1,0 +1,14 @@
+<div class="exercise-section">
+  <h2>Dodawanie ćwiczenia</h2>
+  <form
+    method="POST"
+    action="{{ url_for('admin_add_exercise_to_user', user_id=user.id) }}"
+  >
+    <select name="exercise_id">
+      {% for exercise in exercises %}
+      <option value="{{ exercise.id }}">{{ exercise.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Dodaj ćwiczenie" />
+  </form>
+</div>

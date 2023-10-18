@@ -1,0 +1,106 @@
+{% extends "base_index.html" %} {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .forgot {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      }
+
+      .forgot h1 {
+        color: #ffffff;
+        text-align: center;
+        
+      }
+
+      .forgot label {
+        font-weight: bold;
+        display: block;
+      }
+
+      .forgot input[type="email"],
+      .forgot textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ffffff;
+        font-size: 16px;
+        color: #ffffff;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        background-color: rgb(0, 0, 0);
+        margin-bottom: 1rem;
+      }
+      
+      .forgot input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+      }
+
+      .forgot input[type="submit"] {
+        padding: 10px 20px;
+        width: 100%;
+        background-color: #0408ff;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .forgot input::placeholder {
+        color: white;
+      }
+      .forgot input.email-icon {
+        background-image: url("/static/images/email.png");
+      }
+      .forgot input.email-icon {
+        padding-left: 40px;
+
+        background-size: 20px; 
+        background-repeat: no-repeat;
+        background-position: 10px center;
+      }
+      h3 {
+        color: white;
+        font-size: 0.9rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="forgot">
+      <h1>Zresetuj hasło</h1>
+      <form method="POST">
+        <p>
+          <label for="email"></label>
+          <h3>Aby zresetować hasło, wprowadź swój adres e-mail, a następnie kliknij przycisk 'Zresetuj hasło'. Następnie sprawdź swoją skrzynkę e-mail, do której podałeś swój adres. W wiadomości e-mail znajdziesz specjalny link umożliwiający resetowanie hasła.</h3>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="E-mail"
+            required
+            class="email-icon"
+          />
+
+          <input type="submit" value="Zresetuj hasło" />
+        </p>
+      </form>
+    </div>
+  </body>
+</html>
+{% endblock %}
